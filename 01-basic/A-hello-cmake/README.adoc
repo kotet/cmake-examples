@@ -4,11 +4,16 @@
 
 toc::[]
 
-# Introduction
+// # Introduction
+# 導入
 
-Shows a very basic hello world example.
+// Shows a very basic hello world example.
 
-The files in this tutorial are below:
+非常に基礎的なHello worldから見ていきましょう。
+
+// The files in this tutorial are below:
+
+このチュートリアル内のファイルは以下の通りです。
 
 ```
 A-hello-cmake$ tree
@@ -17,21 +22,31 @@ A-hello-cmake$ tree
 ├── main.cpp
 ```
 
-  * link:CMakeLists.txt[CMakeLists.txt] - Contains the CMake commands you wish to run
-  * link:main.cpp[main.cpp] - A simple "Hello World" cpp file.
+// * link:CMakeLists.txt[CMakeLists.txt] - Contains the CMake commands you wish to run
+// * link:main.cpp[main.cpp] - A simple "Hello World" cpp file.
 
-# Concepts
+  * link:CMakeLists.txt[CMakeLists.txt] - 実行したいCMakeコマンドが含まれます
+  * link:main.cpp[main.cpp] - シンプルな"Hello World" Cppファイルです。
+
+// # Concepts
+# 概念
 
 ### CMakeLists.txt
 
-CMakeLists.txt is the file which should store all your CMake commands. When
-cmake is run in a folder it will look for this file and if it does not exist cmake
-will exit with an error.
+// CMakeLists.txt is the file which should store all your CMake commands. When
+// cmake is run in a folder it will look for this file and if it does not exist cmake
+// will exit with an error.
 
-### Minimum CMake version
+CMakeLists.txtはすべてのCMakeコマンドを入れるファイルです。
+CMakeがフォルダ内で実行された時、CMakeはこのファイルを探して、存在しない場合はエラーで終了します。
 
-When creating a project using CMake, you can specify the minimum version
-of CMake that is supported.
+// ### Minimum CMake version
+### 最小CMakeバージョン
+
+// When creating a project using CMake, you can specify the minimum version
+// of CMake that is supported.
+
+CMakeを使ってプロジェクトを作成する際は、サポートする最小のCMakeのバージョンを指定できます。
 
 [source,cmake]
 ----
@@ -39,10 +54,13 @@ cmake_minimum_required(VERSION 3.5)
 ----
 
 
-### Projects
+// ### Projects
+### プロジェクト
 
-A CMake build can include a project name to make referencing certain
-variables easier when using multiple projects.
+// A CMake build can include a project name to make referencing certain
+// variables easier when using multiple projects.
+
+複数のプロジェクトを利用する際に特定の変数の参照を簡単にするために、CMakeビルドにはプロジェクト名を含めることができます。
 
 [source,cmake]
 ----
@@ -50,12 +68,16 @@ project (hello_cmake)
 ----
 
 
-### Creating an Executable
+// ### Creating an Executable
+### 実行ファイルを作る
 
-The +add_executable()+ command specifies that an executable should be
-build from the specified source files, in this example main.cpp. The
-first argument to the +add_executable()+ function is the name of the
-executable to be built, and the second argument is the list of source files to compile.
+// The +add_executable()+ command specifies that an executable should be
+// build from the specified source files, in this example main.cpp. The
+// first argument to the +add_executable()+ function is the name of the
+// executable to be built, and the second argument is the list of source files to compile.
++add_executable()+ コマンドで特定のソースファイル群からビルドされるべき実行ファイルを指定します。
+この事例ではmain.cppです。
++add_executable()+ 関数の最初の引数はビルドする実行ファイルの名前、2つ目の引数はコンパイルするソースファイルのリストです。
 
 [source,cmake]
 ----
@@ -65,9 +87,12 @@ add_executable(hello_cmake main.cpp)
 
 [NOTE]
 ====
-A shorthand that some people use is to have the project name and
-executable name the same. This allows you to specify the CMakeLists.txt
-as follows,
+// A shorthand that some people use is to have the project name and
+// executable name the same. This allows you to specify the CMakeLists.txt
+// as follows,
+
+プロジェクト名と実行ファイル名が同じ時に使える短縮記法があります。
+これによりCMakeLists.txtを以下のように書けます。
 
 [source,cmake]
 ----
@@ -76,26 +101,38 @@ project (hello_cmake)
 add_executable(${PROJECT_NAME} main.cpp)
 ----
 
-In this example, the +project()+ function, will create a variable
-+${PROJECT_NAME}+ with the value hello_cmake. This can then be passed to
-the +add_executable()+ function to output a 'hello_cmake' executable.
+// In this example, the +project()+ function, will create a variable
+// +${PROJECT_NAME}+ with the value hello_cmake. This can then be passed to
+// the +add_executable()+ function to output a 'hello_cmake' executable.
+
+この例で +project()+ 関数は変数 +${PROJECT_NAME}+ を作成して値hello_cmakeを代入します。
+これは実行ファイル 'hello_cmake' を出力するために +add_executable()+ に渡せます。
 ====
 
 
-### Binary Directory
+// ### Binary Directory
 
-The root or top level folder that you run the cmake command from is known as your
-CMAKE_BINARY_DIR and is the root folder for all your binary files.
-CMake supports building and generating your binary files both in-place and also
-out-of-source.
+### バイナリディレクトリ
 
+// The root or top level folder that you run the cmake command from is known as your
+// CMAKE_BINARY_DIR and is the root folder for all your binary files.
+// CMake supports building and generating your binary files both in-place and also
+// out-of-source.
 
-#### In-Place Build
+cmakeコマンドを実行したrootもしくはトップレベルフォルダはCMAKE_BINARY_DIRとなり、これはすべてのバイナリファイルのrootフォルダです。
+CMakeはバイナリファイルのビルドと生成をIn-placeで行うことと、Out-of-sourceで行うことの両方をサポートしています。
+
+// #### In-Place Build
+#### In-Placeビルド
 
 In-place builds generate all temporary build files in the same directory structure
 as the source code. This means that all Makefiles and object files are interspersed
 with your normal code. To create an in-place build target run the cmake command
 in your root directory. For example:
+
+In-placeビルドはすべての一時ビルドファイルをソースコードと同じディレクトリストラクチャに生成します。
+つまりMakefileやオブジェクトファイルのすべてが通常のコードと混ざって散らばります。
+以下に例を示します。
 
 [source,bash]
 ----
@@ -153,16 +190,23 @@ A-hello-cmake$ tree
 ----
 
 
-#### Out-of-Source Build
+// #### Out-of-Source Build
+#### Out-of-Sourceビルド
 
-Out-of-source builds allow you to create a single build folder that can be anywhere on
-your file system. All temporary build and object files are located in this directory keeping
-your source tree clean. To create an out-of-source build run the cmake command in
-the build folder and point it to the directory with your root CMakeLists.txt file.
-Using out-of-source builds if you want to recreate your cmake environment
-from scratch, you only need to delete your build directory and then rerun cmake.
+// Out-of-source builds allow you to create a single build folder that can be anywhere on
+// your file system. All temporary build and object files are located in this directory keeping
+// your source tree clean. To create an out-of-source build run the cmake command in
+// the build folder and point it to the directory with your root CMakeLists.txt file.
+// Using out-of-source builds if you want to recreate your cmake environment
+// from scratch, you only need to delete your build directory and then rerun cmake.
 
-For example:
+Out-of-Sourceビルドではファイルシステムの好きな場所に単一のビルドフォルダを作成できます。
+すべての一時ビルドファイルとオブジェクトファイルはこのディレクトリに配置され、ソースツリーはクリーンに保たれます。
+Out-of-sourceビルドを作成するにはcmakeコマンドをビルドフォルダで実行し、rootのCMakeLists.txtファイルを指定します。
+Out-of-sourceビルドを使うと、ビルドディレクトリを削除してcmakeを再実行するだけでCMake環境を作り直せます。
+
+// For example:
+以下に例を示します。
 
 [source,bash]
 ----
@@ -228,12 +272,16 @@ A-hello-cmake$ tree
 ├── main.cpp
 ----
 
-All examples in this tutorial will use out-of-source builds.
+// All examples in this tutorial will use out-of-source builds.
 
+このチュートリアルでは今後Out-of-sourceビルドを使います。
 
-# Building the Examples
+// # Building the Examples
+# 事例をビルドする
 
-Below is sample output from building this example.
+// Below is sample output from building this example.
+
+以下はこの事例をビルドしたときの出力例です。
 
 [source,bash]
 ----
