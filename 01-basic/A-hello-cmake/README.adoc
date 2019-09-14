@@ -125,10 +125,10 @@ CMakeはバイナリファイルのビルドと生成をIn-placeで行うこと�
 // #### In-Place Build
 #### In-Placeビルド
 
-In-place builds generate all temporary build files in the same directory structure
-as the source code. This means that all Makefiles and object files are interspersed
-with your normal code. To create an in-place build target run the cmake command
-in your root directory. For example:
+// In-place builds generate all temporary build files in the same directory structure
+// as the source code. This means that all Makefiles and object files are interspersed
+// with your normal code. To create an in-place build target run the cmake command
+// in your root directory. For example:
 
 In-placeビルドはすべての一時ビルドファイルをソースコードと同じディレクトリストラクチャに生成します。
 つまりMakefileやオブジェクトファイルのすべてが通常のコードと混ざって散らばります。
