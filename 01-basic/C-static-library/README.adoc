@@ -86,7 +86,7 @@ add_library(hello_library STATIC
 
 ## インクルードディレクトリの登録
 
-In this example, we include directories in the library using the +target_include_directories()+ function with the scope set to +PUBLIC+.
+// In this example, we include directories in the library using the +target_include_directories()+ function with the scope set to +PUBLIC+.
 
 この事例では、ライブラリ内でディレクトリをインクルードするのに
 +target_include_directories()+ 関数を使い、スコープを +PUBLIC+ にセットしています。
