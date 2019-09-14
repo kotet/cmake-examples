@@ -1,16 +1,25 @@
-= Static Library
+// = Static Library
+= 静的ライブラリ
 :toc:
 :toc-placement!:
 
 toc::[]
 
-# Introduction
+// # Introduction
+# イントロダクション
 
-Shows a hello world example which first creates and links a static library. This is a 
-simplified example showing the library and binary in the same folder. Typically
-these would be in sub-projects as described in section link:../../02-sub-projects[02-sub-projects]
+// Shows a hello world example which first creates and links a static library. This is a 
+// simplified example showing the library and binary in the same folder. Typically
+// these would be in sub-projects as described in section link:../../02-sub-projects[02-sub-projects]
 
-The files in this tutorial are below:
+静的ライブラリを作成しリンクする最初のHello world事例を見ていきます。
+これはライブラリとバイナリが同じフォルダにある簡略化された事例です。
+典型的にはこれらは link:../../02-sub-projects[02-sub-projects]
+セクションで説明するサブプロジェクトに配置されます。
+
+// The files in this tutorial are below:
+
+このチュートリアル内のファイルは以下の通りです。
 
 ```
 $ tree
@@ -24,18 +33,30 @@ $ tree
     └── main.cpp
 ```
 
-  * link:CMakeLists.txt[] - Contains the CMake commands you wish to run
-  * link:include/static/Hello.h[] - The header file to include
-  * link:src/Hello.cpp[] - A source file to compile
-  * link:src/main.cpp[] - The source file with main
+//   * link:CMakeLists.txt[] - Contains the CMake commands you wish to run
+//   * link:include/static/Hello.h[] - The header file to include
+//   * link:src/Hello.cpp[] - A source file to compile
+//   * link:src/main.cpp[] - The source file with main
+
+  * link:CMakeLists.txt[] - 実行したいCMakeコマンドが含まれます。
+  * link:include/static/Hello.h[] - インクルードするヘッダファイル
+  * link:src/Hello.cpp[] - コンパイルするソースファイル
+  * link:src/main.cpp[] - mainが書かれたソースファイル
 
 
-# Concepts
+// # Concepts
 
-## Adding a Static Library
+# 概念
 
-The +add_library()+ function is used to create a library from some source files.
-This is called as follows:
+// ## Adding a Static Library
+
+## 静的ライブラリの追加
+
+// The +add_library()+ function is used to create a library from some source files.
+// This is called as follows:
+
++add_library()+ 関数はソースファイル群からライブラリを作るのに使います。
+これは以下のように呼び出されます。
 
 [source,cmake]
 ----
@@ -44,18 +65,31 @@ add_library(hello_library STATIC
 )
 ----
 
-This will be used to create a static library with the name libhello_library.a with
-the sources in the +add_library+ call.
+// This will be used to create a static library with the name libhello_library.a with
+// the sources in the +add_library+ call.
+
+これによって +add_library+ の呼び出し内で指定されたソースからlibhello_library.aという静的ライブラリが生成されます。
+
+// [NOTE]
+// ====
+// As mentioned in the prevoius example, we pass the source files directly to the
+// +add_library+ call, as recommended for modern CMake.
+// ====
 
 [NOTE]
 ====
-As mentioned in the prevoius example, we pass the source files directly to the
-+add_library+ call, as recommended for modern CMake.
+前の事例で述べた通り、モダンなCMakeで推奨されているように、我々はソースファイルを直接
++add_library+ の呼び出しに渡しています。
 ====
 
-## Populating Including Directories
+// ## Populating Including Directories
+
+## インクルードディレクトリの登録
 
 In this example, we include directories in the library using the +target_include_directories()+ function with the scope set to +PUBLIC+.
+
+この事例では、ライブラリ内でディレクトリをインクルードするのに
++target_include_directories()+ 関数を使い、スコープを +PUBLIC+ にセットしています。
 
 [source,cmake]
 ----
@@ -65,40 +99,70 @@ target_include_directories(hello_library
 )
 ----
 
-This will cause the included directory used in the following places:
+// This will cause the included directory used in the following places:
 
-* When compiling the library
-* When compiling any additional target that links the library.
+これによってインクルードしたディレクトリが以下の場所で使われます。
 
-The meaning of scopes are:
+// * When compiling the library
+// * When compiling any additional target that links the library.
 
-* +PRIVATE+ - the directory is added to this target's include directories
-* +INTERFACE+ - the directory is added to the include directores for any targets that link this library.
-* +PUBLIC+ - As above, it is included int his library and also any targets that link this library.
+* ライブラリをコンパイルする時
+* ライブラリをリンクする追加のターゲットをコンパイルする時
 
+// The meaning of scopes are:
+
+各スコープの意味は以下の通りです。
+
+// * +PRIVATE+ - the directory is added to this target's include directories
+// * +INTERFACE+ - the directory is added to the include directores for any targets that link this library.
+// * +PUBLIC+ - As above, it is included int his library and also any targets that link this library.
+
+* +PRIVATE+ - ディレクトリはターゲットのインクルードディレクトリに追加される
+* +INTERFACE+ - ディレクトリはライブラリをリンクする任意のターゲットに追加される
+* +PUBLIC+ - 上のように、ライブラリ内とライブラリをリンクする任意のターゲットにインクルードされる。
+
+// [TIP]
+// ====
+// For public headers it is often a good idea to have your include folder be "namespaced"
+// with sub-directories. 
+
+// The directory passed to +target_include_directories+ will be the root of your 
+// include directory tree and your C++ files should include the path from there to your header.
+
+// For this example you can see that we do it as follows:
+// [source,cpp]
+// ----
+// #include "static/Hello.h"
+// ----
+
+// Using this method means that there is less chance of header filename clashes when
+// you use multiple libraries in your project. 
+// ====
 
 [TIP]
 ====
-For public headers it is often a good idea to have your include folder be "namespaced"
-with sub-directories. 
+PUBLICなヘッダのインクルードフォルダをサブディレクトリで「ネームスペース」化するのはいい考えです。
 
-The directory passed to +target_include_directories+ will be the root of your 
-include directory tree and your C++ files should include the path from there to your header.
++target_include_directories+ に渡されたディレクトリはインクルードディレクトリツリーのルートになり、C++ファイルはパスをそのルートからヘッダへインクルードしなくてはなりません。
 
-For this example you can see that we do it as follows:
+この事例では以下のようにしています。
 [source,cpp]
 ----
 #include "static/Hello.h"
 ----
 
-Using this method means that there is less chance of header filename clashes when
-you use multiple libraries in your project. 
+このメソッドを使うことで、プロジェクト内で複数のライブラリを使う際のヘッダファイル名の衝突を軽減できます。
 ====
 
-## Linking a Library
+// ## Linking a Library
 
-When creating an executable that will use your library you must tell the compiler
-about the library. This can be done using the +target_link_library()+ function.
+## ライブラリをリンクする
+
+// When creating an executable that will use your library you must tell the compiler
+// about the library. This can be done using the +target_link_library()+ function.
+
+ライブラリを使用する実行ファイルを作成するときはコンパイラにライブラリについて教えなければなりません。
+これは +target_link_library()+ 関数によって行えます。
 
 [source,cmake]
 ----
@@ -112,18 +176,24 @@ target_link_libraries( hello_binary
 )
 ----
 
-This tells CMake to link the hello_library against the hello_binary executable
-during link time. It will also propogate any include directries with +PUBLIC+ or +INTERFACE+ scope
- from the linked library target.
+// This tells CMake to link the hello_library against the hello_binary executable
+// during link time. It will also propogate any include directries with +PUBLIC+ or +INTERFACE+ scope
+//  from the linked library target.
 
-An example of this being called by the compiler is
+これはCMakeにhello_binary実行ファイルのリンク時にhello_libraryをリンクするよう伝えます。
+これはリンクされたライブラリターゲットから +PUBLIC+ または +PUBLIC+ スコープのインクルードディレクトリにも伝播します。
+
+// An example of this being called by the compiler is
+
+以下はこれがコンパイラによって呼ばれる例です。
 
 ```
 /usr/bin/c++ CMakeFiles/hello_binary.dir/src/main.cpp.o -o hello_binary -rdynamic libhello_library.a
 ```
 
 
-# Building the Example
+// # Building the Example
+# 事例のビルド
 
 [source,bash]
 ----
