@@ -5,7 +5,7 @@
 toc::[]
 
 
-# 導入
+# イントロダクション
 
 // Shows a hello world example which uses a different folder for source and include
 // files.

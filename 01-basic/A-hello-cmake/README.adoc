@@ -5,7 +5,7 @@
 toc::[]
 
 // # Introduction
-# 導入
+# イントロダクション
 
 // Shows a very basic hello world example.
 
