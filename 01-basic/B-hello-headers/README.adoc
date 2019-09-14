@@ -5,12 +5,16 @@
 toc::[]
 
 
-# Introduction
+# 導入
 
-Shows a hello world example which uses a different folder for source and include
-files.
+// Shows a hello world example which uses a different folder for source and include
+// files.
 
-The files in this tutorial include:
+ソースとインクルードファイルを異なるフォルダに配置するHello world事例を見ていきます。
+
+// The files in this tutorial include:
+
+このチュートリアル内のファイルは以下の通りです。
 
 ```
 B-hello-headers$ tree
@@ -23,47 +27,91 @@ B-hello-headers$ tree
     └── main.cpp
 ```
 
-  * link:CMakeLists.txt[CMakeLists.txt] - Contains the CMake commands you wish to run.
-  * link:include/Hello.h[include/Hello.h] - The header file to include.
-  * link:src/Hello.cpp[src/Hello.cpp] - A source file to compile.
-  * link:src/main.cpp[src/main.cpp] - The source file with main.
+//   * link:CMakeLists.txt[CMakeLists.txt] - Contains the CMake commands you wish to run.
+//   * link:include/Hello.h[include/Hello.h] - The header file to include.
+//   * link:src/Hello.cpp[src/Hello.cpp] - A source file to compile.
+//   * link:src/main.cpp[src/main.cpp] - The source file with main.
+
+  * link:CMakeLists.txt[CMakeLists.txt] - 実行したいCMakeコマンドが含まれます。
+  * link:include/Hello.h[include/Hello.h] - インクルードするヘッダファイル。
+  * link:src/Hello.cpp[src/Hello.cpp] - コンパイルするソース。
+  * link:src/main.cpp[src/main.cpp] - mainが書かれたソースファイル。
 
 
-# Concepts
+// # Concepts
 
-## Directory Paths
+# 概念
 
-CMake syntax specifies a number of https://cmake.org/Wiki/CMake_Useful_Variables[variables]
-which can be used to help find useful directories in your project or source tree.
-Some of these include:
+// ## Directory Paths
+
+## ディレクトリパス
+
+// CMake syntax specifies a number of https://cmake.org/Wiki/CMake_Useful_Variables[variables]
+// which can be used to help find useful directories in your project or source tree.
+// Some of these include:
+
+CMake構文はプロジェクトやソースツリーから適切なディレクトリを見つけるのに使える様々な https://cmake.org/Wiki/CMake_Useful_Variables[変数] を指定できます。
+以下のような変数があります。
+
+// [cols=",",options="header",]
+// |=======================================================================
+// |Variable |Info
+// |CMAKE_SOURCE_DIR |The root source directory
+
+// |CMAKE_CURRENT_SOURCE_DIR |The current source directory if using
+// sub-projects and directories.
+
+// |PROJECT_SOURCE_DIR |The source directory of the current cmake project.
+
+// |CMAKE_BINARY_DIR |The root binary / build directory. This is the
+// directory where you ran the cmake command.
+
+// |CMAKE_CURRENT_BINARY_DIR |The build directory you are currently in.
+
+// |PROJECT_BINARY_DIR |The build directory for the current project.
+// |=======================================================================
 
 [cols=",",options="header",]
 |=======================================================================
-|Variable |Info
-|CMAKE_SOURCE_DIR |The root source directory
+|変数 |情報
+|CMAKE_SOURCE_DIR |ルートソースディレクトリ
 
-|CMAKE_CURRENT_SOURCE_DIR |The current source directory if using
-sub-projects and directories.
+|CMAKE_CURRENT_SOURCE_DIR |サブプロジェクトやディレクトリを使う場合、カレントソースディレクトリ。
 
-|PROJECT_SOURCE_DIR |The source directory of the current cmake project.
+|PROJECT_SOURCE_DIR |カレントcmakeプロジェクトのソースディレクトリ。
 
-|CMAKE_BINARY_DIR |The root binary / build directory. This is the
-directory where you ran the cmake command.
+|CMAKE_BINARY_DIR |バイナリ / ビルドのルートディレクトリ。cmakeコマンドを実行した場所。
 
-|CMAKE_CURRENT_BINARY_DIR |The build directory you are currently in.
+|CMAKE_CURRENT_BINARY_DIR |現在いるビルドディレクトリ。
 
-|PROJECT_BINARY_DIR |The build directory for the current project.
+|PROJECT_BINARY_DIR |カレントプロジェクトのビルドディレクトリ。
 |=======================================================================
 
-## Source Files Variable
+// ## Source Files Variable
 
-Creating a variable which includes the source files allows you to be
-clearer about these files and easily add them to multiple commands, for example,
-the +add_executable()+ function.
+## ソースファイル変数
+
+// Creating a variable which includes the source files allows you to be
+// clearer about these files and easily add them to multiple commands, for example,
+// the +add_executable()+ function.
+
+ソースファイル群の入った変数を作るとそれらのファイルについてのことがより明確になり、それを簡単に
++add_executable()+ のような複数のコマンドに追記できるようになります。
+
+// [source,cmake]
+// ----
+// # Create a sources variable with a link to all cpp files to compile
+// set(SOURCES
+//     src/Hello.cpp
+//     src/main.cpp
+// )
+
+// add_executable(${PROJECT_NAME} ${SOURCES})
+// ----
 
 [source,cmake]
 ----
-# Create a sources variable with a link to all cpp files to compile
+# コンパイルするすべてのcppファイルへのリンクが入ったソースファイル変数を作る
 set(SOURCES
     src/Hello.cpp
     src/main.cpp
@@ -72,10 +120,21 @@ set(SOURCES
 add_executable(${PROJECT_NAME} ${SOURCES})
 ----
 
+// [NOTE]
+// ====
+// An alternative to setting specific file names in the +SOURCES+ variable is
+// to use a GLOB command to find files using wildcard pattern matching.
+
+// [source,cmake]
+// ----
+// file(GLOB SOURCES "src/*.cpp")
+// ----
+// ====
+
 [NOTE]
 ====
-An alternative to setting specific file names in the +SOURCES+ variable is
-to use a GLOB command to find files using wildcard pattern matching.
++SOURCES+ 変数にファイル名を設定する代替手段としてGLOBコマンドがあり、
+これを使うとファイルをワイルドカードパターンマッチングで指定できます。
 
 [source,cmake]
 ----
@@ -83,20 +142,37 @@ file(GLOB SOURCES "src/*.cpp")
 ----
 ====
 
+// [TIP]
+// ====
+// For modern CMake it is NOT recommended to use a variable for sources. Instead it is 
+// typical to directly declare the sources in the add_xxx function.
+
+// This is particularly important for glob commands which may not always show you the
+// correct results if you add a new source file.
+// ====
 
 [TIP]
 ====
-For modern CMake it is NOT recommended to use a variable for sources. Instead it is 
-typical to directly declare the sources in the add_xxx function.
+モダンなCMameではソースに変数を使うことを推奨していません。
+かわりにadd_xxx関数で直接宣言するのが典型的です。
 
-This is particularly important for glob commands which may not always show you the
-correct results if you add a new source file.
+globコマンドにおいて特に重要なのが、
+新しいソースファイルを追加した時に必ずしも正しい結果が得られるとは限らないということです。
 ====
 
-## Including Directories
+// ## Including Directories
 
-When you have different include folders, you can make your compiler aware of them using the
-+target_include_directories()+ link:https://cmake.org/cmake/help/v3.0/command/target_include_directories.html[function]. When compiling this target this will add these directories to the compiler with the -I flag e.g. `-I/directory/path`
+## インクルードディレクトリ
+
+// When you have different include folders, you can make your compiler aware of them using the
+// +target_include_directories()+ link:https://cmake.org/cmake/help/v3.0/command/target_include_directories.html[function]. When compiling this target this will add these directories to the compiler with the -I flag e.g. `-I/directory/path`
+
+インクルードフォルダが別にある場合、
++target_include_directories()+
+link:https://cmake.org/cmake/help/v3.0/command/target_include_directories.html[関数]
+を使ってそれをコンパイラに教えられます。
+ターゲットをコンパイルする際にこの関数はコンパイラに
+`-I/directory/path` のように-Iフラグを用いてディレクトリを追加します。
 
 [source,cmake]
 ----
@@ -106,13 +182,25 @@ target_include_directories(target
 )
 ----
 
-The +PRIVATE+ identifier specifies the scope of the include. This is important for libraries and is exlpained in the next example. More details on the function is available link:https://cmake.org/cmake/help/v3.0/command/target_include_directories.html[here]
+// The +PRIVATE+ identifier specifies the scope of the include. This is important for libraries and is exlpained in the next example. More details on the function is available link:https://cmake.org/cmake/help/v3.0/command/target_include_directories.html[here]
 
-# Building the Example
++PRIVATE+ 識別子はインクルードのスコープを指定します。
+これは次の事例で説明するライブラリにおいて重要です。
+この関数の詳細は
+link:https://cmake.org/cmake/help/v3.0/command/target_include_directories.html[こちら]
+で見ることができます。
 
-## Standard Output
+// # Building the Example
 
-The standard output from building this example is presented below.
+# 事例をビルドする
+
+// ## Standard Output
+
+## 標準出力
+
+// The standard output from building this example is presented below.
+
+この事例をビルドする際の標準出力は以下のようになります。
 
 [source,bash]
 ----
@@ -147,14 +235,21 @@ Hello Headers!
 ----
 
 
-## Verbose Output
+// ## Verbose Output
 
-In the previous examples, when running the make command the output only
-shows the status of the build. To see the full output for debugging
-purposes you can add +VERBOSE=1+ flag when running make.
+## 冗長出力
 
-The VERBOSE output is show below, and a examination of the output shows
-the include directories being added to the c++ compiler command.
+// In the previous examples, when running the make command the output only
+// shows the status of the build. To see the full output for debugging
+// purposes you can add +VERBOSE=1+ flag when running make.
+
+以前の事例で、makeコマンドを実行した際の出力はビルドの状況のみになっていました。
+デバッグ目的に完全な出力を見るには +VERBOSE=1+ フラグをmakeに追加します。
+
+// The VERBOSE output is show below, and a examination of the output shows
+// the include directories being added to the c++ compiler command.
+
+冗長な出力は以下のようになり、出力を見るとインクルードディレクトリがC++コンパイラコマンドに追加されていることがわかります。
 
 [source,bash]
 ----
