@@ -5,37 +5,55 @@
 
 toc::[]
 
-# Introduction
+# イントロダクション
 
-https://cmake.org/[CMake] is a cross-platform open-source meta-build system which
-can build, test and package software. It can be used to support multiple native build environments including
-make, Apple's xcode and Microsoft Visual Studio.
+// https://cmake.org/[CMake] is a cross-platform open-source meta-build system which
+// can build, test and package software. It can be used to support multiple native build environments including
+// make, Apple's xcode and Microsoft Visual Studio.
 
-This repository includes some example modern CMake configurations which I have picked up
-when exploring it's usage for various projects. The examples are laid out in a tutorial like format.
-The first examples are very basic and slowly increase in complexity drawing on previous examples to show
-more complex use cases.
+https://cmake.org/[CMake] はソフトウェアをビルド、テスト、パッケージできるクロスプラットフォームでオープンソースなメタ-ビルドシステムです。
+make、Appleのxcode、Microsoft Visual Studioなどを含む複数のネイティブビルド環境をサポートするのに使えます。
 
-These examples have been tested on Ubuntu 16.04 but should work under any Linux system that supports CMake v3.5+.
+// This repository includes some example modern CMake configurations which I have picked up
+// when exploring it's usage for various projects. The examples are laid out in a tutorial like format.
+// The first examples are very basic and slowly increase in complexity drawing on previous examples to show
+// more complex use cases.
 
-This branch works with the CMake version 3.5 onwards. 
+このリポジトリには、私が様々なプロジェクトにおける使われ方を調査して選んだモダンなCMakeのコンフィギュレーションの事例が含まれます。
+事例集はチュートリアル風に構成されています。
+最初の事例は非常に基礎的で、複雑さは以前の事例を利用してさらに複雑なユースケースを示すようにゆっくりと上昇していきます。
 
-* For examples that use CMake version 2.x see the branch link:https://github.com/ttroy50/cmake-examples/tree/v2-style-includes[v2-style-includes].
-* For examples that use CMake version 3.0 see the branch link:https://github.com/ttroy50/cmake-examples/tree/v3.0-minimum[v3.0-minimum]
+// These examples have been tested on Ubuntu 16.04 but should work under any Linux system that supports CMake v3.5+.
+
+これら事例群はUbuntu 16.04上でテストしましたが、CMake v3.5+をサポートする任意のLinuxシステムで動作するはずです。
+
+// This branch works with the CMake version 3.5 onwards. 
+
+このブランチはCMake version 3.5以降で動作します。
+
+// * For examples that use CMake version 2.x see the branch link:https://github.com/ttroy50/cmake-examples/tree/v2-style-includes[v2-style-includes].
+// * For examples that use CMake version 3.0 see the branch link:https://github.com/ttroy50/cmake-examples/tree/v3.0-minimum[v3.0-minimum]
+
+* CMake version 2.x の事例集はこちら link:https://github.com/ttroy50/cmake-examples/tree/v2-style-includes[v2-style-includes].
+* CMake version 3.0 の事例集はこちら link:https://github.com/ttroy50/cmake-examples/tree/v3.0-minimum[v3.0-minimum]
 
 image:https://travis-ci.org/ttroy50/cmake-examples.svg?branch=master["Build Status", link="https://travis-ci.org/ttroy50/cmake-examples"]
 
-# Requirements
+# 必須要件
 
-The basic requirements for most examples are:
+// The basic requirements for most examples are:
+
+多くの事例では以下のものが要求されます。
 
 * CMake v3.5+
-* A c++ compiler (defaults to gcc)
+* C++ コンパイラ (デフォルトはgcc)
 * make
 
-## Installation on Ubuntu
+## Ubuntuにインストールする
 
-The easiest way to install the above on Ubuntu is as follows
+// The easiest way to install the above on Ubuntu is as follows
+
+上記のものをUbuntuにインストールするには以下のようにするのが最も簡単です。
 
 [source,bash]
 ----
@@ -43,7 +61,9 @@ $ sudo apt-get install build-essential
 $ sudo apt-get install cmake
 ----
 
-Some specific examples may require other tools including:
+// Some specific examples may require other tools including:
+
+いくつかの事例ではその他以下に挙げるツールが要求されることがあります。
 
 * http://www.boost.org/[boost]
 
@@ -71,11 +91,19 @@ Some specific examples may require other tools including:
   $ sudo apt-get install python3 python3-pip
   $ sudo pip3 install conan
 
+// ## Docker
+
 ## Docker
 
-Docker containers with all requirements and various versions of CMake are generated to help make testing the examples easier. These are available from the docker hub repository link:https://hub.docker.com/r/matrim/cmake-examples/[matrim/cmake-examples].
+// Docker containers with all requirements and various versions of CMake are generated to help make testing the examples easier. These are available from the docker hub repository link:https://hub.docker.com/r/matrim/cmake-examples/[matrim/cmake-examples].
 
-To build the full set of cmake-examples test cases you can run:
+すべての要件を含み、様々なバージョンのCMakeを含むDockerコンテナが事例集を簡単にテストするために生成されています。Docker hubリポジトリ
+link:https://hub.docker.com/r/matrim/cmake-examples/[matrim/cmake-examples]
+で利用できます。
+
+// To build the full set of cmake-examples test cases you can run:
+
+cmake-examplesのすべてのテストケースをビルドするには以下のようにします。
 
 [source,bash]
 ----
@@ -85,12 +113,18 @@ cd cmake-examples
 ./test.sh
 ----
 
-For more details on build and running the docker containers link:here[dockerfiles].
+// For more details on build and running the docker containers link:here[dockerfiles].
 
-# Other Links
+ビルドと実行に関する詳細はDockerコンテナの link:here[dockerfiles]を参照してください。
 
-There are many CMake tutorials and examples online. The list below includes links
-to some of these which I have found helpful in my CMake journey.
+// # Other Links
+# その他リンク
+
+// There are many CMake tutorials and examples online. The list below includes links
+// to some of these which I have found helpful in my CMake journey.
+
+オンラインには多くのCMakeチュートリアルや事例集が存在します。
+以下のリストはCMakeの調査において助けになったリンクです。
 
   * http://www.kdab.com/~stephen/moderncmake.pdf[Modern CMake Slides]
   * https://rix0r.nl/blog/2015/08/13/cmake-guide/[rix0r Modern CMake Blog]
@@ -101,7 +135,8 @@ to some of these which I have found helpful in my CMake journey.
   * http://techminded.net/blog/modular-c-projects-with-cmake.html[Modular C++ Projects]
   * http://voices.canonical.com/jussi.pakkanen/2013/03/26/a-list-of-common-cmake-antipatterns/[Common CMake Anti-Patterns]
   * http://baptiste-wicht.com/posts/2014/04/install-use-clang-static-analyzer-cmake.html[Using clang static analyser with CMake]
-  * https://cmake.org/pipermail/cmake/2011-April/043709.html[Static Analysis with CDash] - Includes some info about using CppCheck with CMake
+// * https://cmake.org/pipermail/cmake/2011-April/043709.html[Static Analysis with CDash] - Includes some info about using CppCheck with CMake
+  * https://cmake.org/pipermail/cmake/2011-April/043709.html[Static Analysis with CDash] - CMakeでCppCheckを利用するための情報があります
   * https://www.openfoundry.org/svn/cms/trunk/cmake/CppcheckTargets.cmake[CppCheck Targets]
   * https://samthursfield.wordpress.com/2015/10/20/some-cmake-tips/[CMake Tips]
   * https://www.johnlamp.net/cmake-tutorial.html[John Lamp - CMake Tutorial]
