@@ -1,16 +1,24 @@
-= Shared Library
+// = Shared Library
+= 共有ライブラリ
 :toc:
 :toc-placement!:
 
 toc::[]
 
-# Introduction
+// # Introduction
+# イントロダクション
 
-Shows a hello world example which first creates and links a shared library.
+// Shows a hello world example which first creates and links a shared library.
+共有ライブラリを作成しリンクする最初のHello world事例を見ていきます。
 
-This also shows how to create an link:https://cmake.org/cmake/help/v3.0/manual/cmake-buildsystem.7.html#alias-targets[alias target]
+// This also shows how to create an link:https://cmake.org/cmake/help/v3.0/manual/cmake-buildsystem.7.html#alias-targets[alias target]
 
-The files in this tutorial are below:
+同時に
+link:https://cmake.org/cmake/help/v3.0/manual/cmake-buildsystem.7.html#alias-targets[エイリアスターゲット]
+の作り方も学びます。
+
+// The files in this tutorial are below:
+このチュートリアル内のファイルは以下の通りです。
 
 ```
 $ tree
@@ -24,19 +32,29 @@ $ tree
     └── main.cpp
 ```
 
-  * link:CMakeLists.txt[] - Contains the CMake commands you wish to run
-  * link:include/shared/Hello.h[] - The header file to include
-  * link:src/Hello.cpp[] - A source file to compile
-  * link:src/main.cpp[] - The source file with main
+//   * link:CMakeLists.txt[] - Contains the CMake commands you wish to run
+//   * link:include/shared/Hello.h[] - The header file to include
+//   * link:src/Hello.cpp[] - A source file to compile
+//   * link:src/main.cpp[] - The source file with main
+
+  * link:CMakeLists.txt[] - 実行したいCMakeコマンドが含まれます。
+  * link:include/shared/Hello.h[] - インクルードするヘッダファイル
+  * link:src/Hello.cpp[] - コンパイルするソースファイル
+  * link:src/main.cpp[] - mainが書かれたソースファイル
 
 
-# Concepts
+// # Concepts
+# 概念
 
-## Adding a Shared Library
+// ## Adding a Shared Library
+## 共有ライブラリを追加
 
-As with the previous example on static libraries, the +add_library()+ function
-is also used to create a shared library from some source files.
-This is called as follows:
+// As with the previous example on static libraries, the +add_library()+ function
+// is also used to create a shared library from some source files.
+// This is called as follows:
+
+前の事例で静的ライブラリを作ったように、 +add_library()+ 関数はソースファイル群から共有ライブラリを作ることもできます。
+以下のように呼び出します。
 
 [source,cmake]
 ----
@@ -45,24 +63,36 @@ add_library(hello_library SHARED
 )
 ----
 
-This will be used to create a shared library with the name libhello_library.so with
-the sources passed to the +add_library()+ function.
+// This will be used to create a shared library with the name libhello_library.so with
+// the sources passed to the +add_library()+ function.
+これによって +add_library()+ 関数に渡されたソースを元に libhello_library.so という名前で共有ライブラリが作られます。
 
-## Alias Target
+// ## Alias Target
+## エイリアスターゲット
 
-As the name suggests an link:https://cmake.org/cmake/help/v3.0/manual/cmake-buildsystem.7.html#alias-targets[alias target] is an alternative name for a target that can be used instead of the real target name in read-only contexts.
+// As the name suggests an link:https://cmake.org/cmake/help/v3.0/manual/cmake-buildsystem.7.html#alias-targets[alias target] is an alternative name for a target that can be used instead of the real target name in read-only contexts.
+
+その名が示すように、
+link:https://cmake.org/cmake/help/v3.0/manual/cmake-buildsystem.7.html#alias-targets[エイリアスターゲット]
+とはターゲットにリードオンリーなコンテキストで実際のターゲット名とは別の名前のことです。
 
 [source,cmake]
 ----
 add_library(hello::library ALIAS hello_library)
 ----
 
-As shown below, this allows you to reference the target using the alias name when linking it against other targets.
+// As shown below, this allows you to reference the target using the alias name when linking it against other targets.
 
-## Linking a Shared Library
+下で見ていくように、エイリアスターゲットを使うと他のターゲットに対してそれをリンクする際に別名で参照できるようになります。
 
-Linking a shared library is the same as linking a static library. When creating your
-executable use the the +target_link_library()+ function to point to your library
+// ## Linking a Shared Library
+## 共有ライブラリのリンク
+
+// Linking a shared library is the same as linking a static library. When creating your
+// executable use the the +target_link_library()+ function to point to your library
+
+共有ライブラリをリンクするときは静的ライブラリと同じようにします。
+実行ファイルを作るときに +target_link_library()+ 関数を使ってライブラリを指定します。
 
 [source,cmake]
 ----
@@ -76,15 +106,20 @@ target_link_libraries(hello_binary
 )
 ----
 
-This tells CMake to link the hello_library against the hello_binary executable using the alias target name.
+// This tells CMake to link the hello_library against the hello_binary executable using the alias target name.
 
-An example of this being called by the linker is
+これはCMakeにhello_binaryに対してhello_libraryをリンクするようにエイリアスターゲット名を使って指示しています。
+
+// An example of this being called by the linker is
+
+これは例えばリンカにこのように呼ばれます。
 
 ```
 /usr/bin/c++ CMakeFiles/hello_binary.dir/src/main.cpp.o -o hello_binary -rdynamic libhello_library.so -Wl,-rpath,/home/matrim/workspace/cmake-examples/01-basic/D-shared-library/build
 ```
 
-# Building the Example
+// # Building the Example
+# 事例のビルド
 
 [source,bash]
 ----
