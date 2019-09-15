@@ -1,15 +1,22 @@
-= Installing
+// = Installing
+= インストール
 :toc:
 :toc-placement!:
 
 toc::[]
 
-# Introduction
+// # Introduction
+# イントロダクション
 
-This example shows how to generate a `make install` target to install files and
-binaries on your system. This is based on the previous shared library example.
+// This example shows how to generate a `make install` target to install files and
+// binaries on your system. This is based on the previous shared library example.
 
-The files in this tutorial are below:
+この事例ではファイルやバイナリをシステムにインストールする
+`make install` ターゲットを生成する方法を学びます。
+この事例は前の共有ライブラリ事例を元にしています。
+
+// The files in this tutorial are below:
+このチュートリアル内のファイルは以下の通りです。
 
 ```
 $ tree
@@ -25,22 +32,38 @@ $ tree
     └── main.cpp
 ```
 
-  * link:CMakeLists.txt[] - Contains the CMake commands you wish to run
-  * link:cmake-examples.conf[] - An example configuration file
-  * link:include/installing/Hello.h[] - The header file to include
-  * link:src/Hello.cpp[] - A source file to compile
-  * link:src/main.cpp[] - The source file with main
+//   * link:CMakeLists.txt[] - Contains the CMake commands you wish to run
+//   * link:cmake-examples.conf[] - An example configuration file
+//   * link:include/installing/Hello.h[] - The header file to include
+//   * link:src/Hello.cpp[] - A source file to compile
+//   * link:src/main.cpp[] - The source file with main
 
-# Concepts
+  * link:CMakeLists.txt[] - 実行したいCMakeコマンドが含まれます
+  * link:cmake-examples.conf[] - 設定ファイルの例
+  * link:include/shared/Hello.h[] - インクルードするヘッダファイル
+  * link:src/Hello.cpp[] - コンパイルするソースファイル
+  * link:src/main.cpp[] - mainが書かれたソースファイル
 
-## Installing
+// # Concepts
+# 概念
 
-CMake offers the ability to add a `make install` target to allow a user to
-install binaries, libraries and other files. The base install location is controlled
-by the variable +CMAKE_INSTALL_PREFIX+ which can be set using ccmake or by calling
-cmake with `cmake .. -DCMAKE_INSTALL_PREFIX=/install/location`
+// ## Installing
+## インストール
 
-The files that are installed are controlled by the https://cmake.org/cmake/help/v3.0/command/install.html[+install()+] function.
+// CMake offers the ability to add a `make install` target to allow a user to
+// install binaries, libraries and other files. The base install location is controlled
+// by the variable +CMAKE_INSTALL_PREFIX+ which can be set using ccmake or by calling
+// cmake with `cmake .. -DCMAKE_INSTALL_PREFIX=/install/location`
+
+CMakeはユーザがバイナリ、ライブラリ、その他ファイルをインストールする手段である `make install`
+ターゲットを追加する機能を提供しています。
+ベースインストール場所はccmakeを使うか、もしくはcmakeを `cmake .. -DCMAKE_INSTALL_PREFIX=/install/location` のように呼び出すことで設定できる変数 +CMAKE_INSTALL_PREFIX+ で制御できます。
+
+// The files that are installed are controlled by the https://cmake.org/cmake/help/v3.0/command/install.html[+install()+] function.
+
+インストールされるファイルは
+https://cmake.org/cmake/help/v3.0/command/install.html[+install()+]
+関数で制御できます。
 
 [source,cmake]
 ----
@@ -48,8 +71,10 @@ install (TARGETS cmake_examples_inst_bin
     DESTINATION bin)
 ----
 
-Install the binary generated from the target cmake_examples_inst_bin target to
-the destination +${CMAKE_INSTALL_PREFIX}/bin+
+// Install the binary generated from the target cmake_examples_inst_bin target to
+// the destination +${CMAKE_INSTALL_PREFIX}/bin+
+
+ターゲットcmake_examples_inst_binから生成されたバイナリを +${CMAKE_INSTALL_PREFIX}/bin+ へインストールします。
 
 [source,cmake]
 ----
@@ -57,13 +82,28 @@ install (TARGETS cmake_examples_inst
     LIBRARY DESTINATION lib)
 ----
 
-Install the shared library generated from the target cmake_examples_inst target to
-the destination +${CMAKE_INSTALL_PREFIX}/lib+
+// Install the shared library generated from the target cmake_examples_inst target to
+// the destination +${CMAKE_INSTALL_PREFIX}/lib+
+
+ターゲットcmake_examples_instから生成されたライブラリを +${CMAKE_INSTALL_PREFIX}/lib+ へインストールします。
+
+// [NOTE]
+// ====
+// This may not work on windows. On platforms that have DLL targets you
+// may need to add the following
+
+// [source,cmake]
+// ----
+// install (TARGETS cmake_examples_inst
+//     LIBRARY DESTINATION lib
+//     RUNTIME DESTINATION bin)
+// ----
+// ====
 
 [NOTE]
 ====
-This may not work on windows. On platforms that have DLL targets you
-may need to add the following
+これはWindowsでは動作しないかもしれません。
+DLLターゲットをもつプラットフォームでは以下のように追記する必要があります。
 
 [source,cmake]
 ----
@@ -73,15 +113,16 @@ install (TARGETS cmake_examples_inst
 ----
 ====
 
-
 [source,cmake]
 ----
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/ 
     DESTINATION include)
 ----
 
-Install the header files for developing against the +cmake_examples_inst+ library
-into the +${CMAKE_INSTALL_PREFIX}/include+ directory.
+// Install the header files for developing against the +cmake_examples_inst+ library
+// into the +${CMAKE_INSTALL_PREFIX}/include+ directory.
+
++cmake_examples_inst+ ライブラリに対するヘッダファイルを +${CMAKE_INSTALL_PREFIX}/include+ ディレクトリに開発用にインストールします。
 
 [source,cmake]
 ----
@@ -89,18 +130,28 @@ install (FILES cmake-examples.conf
     DESTINATION etc)
 ----
 
-Install a configuration file to the destination +${CMAKE_INSTALL_PREFIX}/etc+
+// Install a configuration file to the destination +${CMAKE_INSTALL_PREFIX}/etc+
 
-After `make install` has been run, CMake generates an install_manifest.txt file
-which includes details on all installed files.
+設定ファイルを +${CMAKE_INSTALL_PREFIX}/etc+ にインストールします。
+
+// After `make install` has been run, CMake generates an install_manifest.txt file
+// which includes details on all installed files.
+
+`make install` が実行された後、CMakeはインストールされた全ファイルの詳細が書かれたinstall_manifest.txtファイルを生成します。
+
+// [NOTE]
+// ====
+// If you run the `make install` command as root, the install_manifest.txt file will
+// be owned by root.
+// ====
 
 [NOTE]
 ====
-If you run the `make install` command as root, the install_manifest.txt file will
-be owned by root.
+`make install` コマンドをrootで実行した場合、install_manifest.txtの所有権はrootのものになります。
 ====
 
-# Building the Example
+// # Building the Example
+# 事例のビルド
 
 [source,bash]
 ----
@@ -162,10 +213,15 @@ $ LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib cmake_examples_inst_bin
 Hello Install!
 ----
 
+// [NOTE]
+// ====
+// If `/usr/local/lib` is not in your library path you may need to add it to the
+// path before running the binary.
+// ====
+
 [NOTE]
 ====
-If `/usr/local/lib` is not in your library path you may need to add it to the
-path before running the binary.
+`/usr/local/lib` がライブラリパスではない場合、バイナリの実行前にパスに追加する必要があるかもしれません。
 ====
 
 [[extra-notes]]
@@ -173,15 +229,21 @@ Extra Notes
 ~~~~~~~~~~~
 
 [[default-location]]
-Overriding the default install location
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// Overriding the default install location
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+デフォルトインストール場所のオーバーライド
+^^^^^^^^^^^^^^^^^^^^^
 
-As mentioned the default install location is set from the +CMAKE_INSTALL_PERFIX+,
-which defaults to `/usr/local/`
+// As mentioned the default install location is set from the +CMAKE_INSTALL_PERFIX+,
+// which defaults to `/usr/local/`
 
-If you want to change this default location for all users you can add the
-following code to your top level CMakeLists.txt before adding any binaries or
-libraries.
+デフォルトのインストール場所は +CMAKE_INSTALL_PERFIX+ で指定されており、デフォルトでは `/usr/local/` です。
+
+// If you want to change this default location for all users you can add the
+// following code to your top level CMakeLists.txt before adding any binaries or
+// libraries.
+
+全ユーザーに対してデフォルトの場所を変更したい場合は以下のコードを最上位のCMakeLists.txtのすべてのバイナリやライブラリの上に追記します。
 
 [source,cmake]
 ----
@@ -191,22 +253,28 @@ if( CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT )
 endif()
 ----
 
-This example sets the default install location to under your build directory.
+// This example sets the default install location to under your build directory.
+
+この例ではデフォルトインストール場所をビルドディレクトリ下に設定しています。
 
 [[destdir]]
 DESTDIR
 ^^^^^^^
 
-If you wish to stage your install to confirm that all files are included the
-`make install` target supports the DESTDIR argument.
+// If you wish to stage your install to confirm that all files are included the
+// `make install` target supports the DESTDIR argument.
+
+インストールされる全ファイルを確認したいなら、`make install` ターゲットはDESTDIR引数をサポートしています。
 
 ```
 make install DESTDIR=/tmp/stage
 ```
 
-This will create the install path `${DESTDIR}/${CMAKE_INSTALL_PREFIX}` for all
-your installation files. In this example, it would install all files under the
-path `/tmp/stage/usr/local`
+// This will create the install path `${DESTDIR}/${CMAKE_INSTALL_PREFIX}` for all
+// your installation files. In this example, it would install all files under the
+// path `/tmp/stage/usr/local`
+
+これはインストールされるファイルのためにインストールパス`${DESTDIR}/${CMAKE_INSTALL_PREFIX}`を作成します。この例では、全ファイルは `/tmp/stage/usr/local` 下にインストールされます。 
 
 ```
 $ tree /tmp/stage
@@ -222,13 +290,22 @@ $ tree /tmp/stage
 ```
 
 [[uninstall]]
-Uninstall
-^^^^^^^^^
+// Uninstall
+// ^^^^^^^^^
+アンインストール
+^^^^^^^
 
-By default CMake does not add a `make uninstall` target. For details on how to generate
-an uninstall target see this https://cmake.org/Wiki/CMake_FAQ#Can_I_do_.22make_uninstall.22_with_CMake.3F[FAQ]
+// By default CMake does not add a `make uninstall` target. For details on how to generate
+// an uninstall target see this https://cmake.org/Wiki/CMake_FAQ#Can_I_do_.22make_uninstall.22_with_CMake.3F[FAQ]
 
-For an easy way to remove the files from this example, you can use:
+CMakeはデフォルトでは `make uninstall` ターゲットを作りません。
+uninstallターゲットを生成する方法についてはこちらの
+https://cmake.org/Wiki/CMake_FAQ#Can_I_do_.22make_uninstall.22_with_CMake.3F[FAQ]
+を見てください。
+
+// For an easy way to remove the files from this example, you can use:
+
+この事例のファイルを削除するには以下の方法が簡単です。
 
 ```
 sudo xargs rm < install_manifest.txt
