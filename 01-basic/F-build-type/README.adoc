@@ -1,23 +1,33 @@
-= Build Type
+// = Build Type
+= ビルドタイプ
 :toc:
 :toc-placement!:
 
 toc::[]
 
-# Introduction
+# イントロダクション
 
-CMake has a number of built in build configurations which can be used to compile
-your project. These specify the optimization levels and if debug information is
-to be included in the binary.
+// CMake has a number of built in build configurations which can be used to compile
+// your project. These specify the optimization levels and if debug information is
+// to be included in the binary.
 
-The levels provided are:
+CMakeにはプロジェクトをコンパイルする際に使える組み込みのビルド設定が複数あります。
+これらは最適化レベルや、デバッグ情報をバイナリに含めるかどうかを指定します。
 
-  * Release - Adds the `-O3 -DNDEBUG` flags to the compiler
-  * Debug - Adds the `-g` flag
-  * MinSizeRel - Adds `-Os -DNDEBUG`
-  * RelWithDebInfo - Adds `-O2 -g -DNDEBUG` flags
+// The levels provided are:
+提供されるレベルは以下の通りです。
 
-The files in this tutorial are below:
+// * Release - Adds the `-O3 -DNDEBUG` flags to the compiler
+// * Debug - Adds the `-g` flag
+// * MinSizeRel - Adds `-Os -DNDEBUG`
+// * RelWithDebInfo - Adds `-O2 -g -DNDEBUG` flags
+  * Release - コンパイラに `-O3 -DNDEBUG` フラグを追加する
+  * Debug - `-g` フラグを追加する
+  * MinSizeRel - `-Os -DNDEBUG` を追加する
+  * RelWithDebInfo - `-O2 -g -DNDEBUG` フラグを追加する
+
+// The files in this tutorial are below:
+このチュートリアル内のファイルは以下の通りです。
 
 ```
 $ tree
@@ -26,33 +36,45 @@ $ tree
 ├── main.cpp
 ```
 
-  * link:CMakeLists.txt[] - Contains the CMake commands you wish to run
-  * link:main.cpp[] - The source file with main
+// * link:CMakeLists.txt[] - Contains the CMake commands you wish to run
+// * link:main.cpp[] - The source file with main
 
-# Concepts
+  * link:CMakeLists.txt[] - 実行したいCMakeコマンドが含まれます
+  * link:src/main.cpp[] - mainが書かれたソースファイル
 
-## Set Build Type
+# 概念
 
-The build type can be set using the following methods.
+## ビルドタイプを設定する
 
-  - Using a gui tool such as ccmake / cmake-gui
+// The build type can be set using the following methods.
+ビルドタイプは以下のメソッドを使って設定できます。
+
+// - Using a gui tool such as ccmake / cmake-gui
+  - ccmake / cmake-guiのようなGUIツールを使う
 
 image::cmake-gui-build-type.png[cmake-gui build type]
 
-  - Passing into cmake
+// - Passing into cmake
+  - cmakeに渡す
 
 [source,cmake]
 ----
 cmake .. -DCMAKE_BUILD_TYPE=Release
 ----
 
-## Set Default Build Type
+// ## Set Default Build Type
+## デフォルトビルドタイプを設定する
 
-The default build type provided by CMake is to include no compiler flags for
-optimization. For some projects you may want to
-set a default build type so that you do not have to remember to set it.
+// The default build type provided by CMake is to include no compiler flags for
+// optimization. For some projects you may want to
+// set a default build type so that you do not have to remember to set it.
 
-To do this you can add the following to your top level CMakeLists.txt
+CMakeが提供するデフォルトのビルドタイプは最適化コンパイラフラグを含みません。
+プロジェクトによってはデフォルトビルドタイプを設定したいことがあるので、設定することを忘れてはいけません。
+
+// To do this you can add the following to your top level CMakeLists.txt
+
+設定をするにはトップレベルCMakeLists.txtに以下のように追記します。
 
 [source,cmake]
 ----
@@ -65,7 +87,8 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 ----
 
-# Building the Example
+// # Building the Example
+# 事例のビルド
 
 [source,bash]
 ----
