@@ -1,17 +1,23 @@
-= Compile Flags
+// = Compile Flags
+= コンパイルフラグ
 :toc:
 :toc-placement!:
 
 toc::[]
 
-# Introduction
+// # Introduction
+# イントロダクション
 
-CMake supports setting compile flags in a number of different ways:
+// CMake supports setting compile flags in a number of different ways:
+CMakeはコンパイルフラグを設定する様々な手段を提供しています。
 
-  * using +target_compile_definitions()+ function
-  * using the +CMAKE_C_FLAGS+ and +CMAKE_CXX_FLAGS+ variables.
+// * using +target_compile_definitions()+ function
+// * using the +CMAKE_C_FLAGS+ and +CMAKE_CXX_FLAGS+ variables.
+  * +target_compile_definitions()+ 関数を使う
+  * +CMAKE_C_FLAGS+ や +CMAKE_CXX_FLAGS+ 変数を使う
 
-The files in this tutorial are below:
+// The files in this tutorial are below:
+このチュートリアル内のファイルは以下の通りです。
 
 ```
 $ tree
@@ -20,15 +26,26 @@ $ tree
 ├── main.cpp
 ```
 
-  * link:CMakeLists.txt[] - Contains the CMake commands you wish to run
-  * link:main.cpp[] - The source file with main
+// * link:CMakeLists.txt[] - Contains the CMake commands you wish to run
+// * link:main.cpp[] - The source file with main
+  * link:CMakeLists.txt[] - 実行したいCMakeコマンドが含まれます
+  * link:src/main.cpp[] - mainが書かれたソースファイル
 
-# Concepts
+// # Concepts
+# 概念
 
-# Set Per-Target C++ Flags
+// # Set Per-Target C++ Flags
+# ターゲットごとのC++フラグを設定する
 
-The recommended way to set C++ flags in modern CMake is to use per-target flags which can be populated to other targets
-through the +target_compile_definitions()+ link:https://cmake.org/cmake/help/v3.0/command/target_compile_definitions.html?highlight=target_compile_definitions[function]. This will populate the link:https://cmake.org/cmake/help/v3.0/prop_tgt/INTERFACE_COMPILE_DEFINITIONS.html#prop_tgt:INTERFACE_COMPILE_DEFINITIONS[INTERFACE_COMPILE_DEFINITIONS] for the library and push the definition to the linked target depending on the scope.
+// The recommended way to set C++ flags in modern CMake is to use per-target flags which can be populated to other targets
+// through the +target_compile_definitions()+ link:https://cmake.org/cmake/help/v3.0/command/target_compile_definitions.html?highlight=target_compile_definitions[function]. This will populate the link:https://cmake.org/cmake/help/v3.0/prop_tgt/INTERFACE_COMPILE_DEFINITIONS.html#prop_tgt:INTERFACE_COMPILE_DEFINITIONS[INTERFACE_COMPILE_DEFINITIONS] for the library and push the definition to the linked target depending on the scope.
+
+モダンなCMakeにおいてC++フラグを設定する方法として推奨されているのは +target_compile_definitions()+
+link:https://cmake.org/cmake/help/v3.0/command/target_compile_definitions.html?highlight=target_compile_definitions[関数]
+を通して他のターゲットに追加できるターゲットごとのフラグを使うことです。
+これはライブラリに向けて
+link:https://cmake.org/cmake/help/v3.0/prop_tgt/INTERFACE_COMPILE_DEFINITIONS.html#prop_tgt:INTERFACE_COMPILE_DEFINITIONS[INTERFACE_COMPILE_DEFINITIONS]
+を設定し、リンクされたターゲットのスコープに応じて定義を追加します。
 
 [source,cmake]
 ----
@@ -37,57 +54,84 @@ target_compile_definitions(cmake_examples_compile_flags
 )
 ----
 
-This will cause the compiler to add the definition +-DEX3+ when compiling the target.
+// This will cause the compiler to add the definition +-DEX3+ when compiling the target.
+これによってターゲットをコンパイルする際、コンパイラが定義 +-DEX3+ を追加するようになります。
 
-In the target was a library, and the scope +PUBLIC+ or +INTERFACE+ has been choosen the definition would also be included in any executables that link this target.
+// In the target was a library, and the scope +PUBLIC+ or +INTERFACE+ has been choosen the definition would also be included in any executables that link this target.
+ターゲットがライブラリであり +PUBLIC+ または +INTERFACE+ スコープが選択されている場合、定義はそのターゲットをリンクするすべての実行ファイルに含まれるようになります。
 
-For compiler options you can also use the +target_compile_options()+ link:https://cmake.org/cmake/help/v3.0/command/target_compile_options.html[function].
+// For compiler options you can also use the +target_compile_options()+ link:https://cmake.org/cmake/help/v3.0/command/target_compile_options.html[function].
+コンパイルオプションに関しては +target_compile_options()+
+link:https://cmake.org/cmake/help/v3.0/command/target_compile_options.html[関数] も使えます。
 
-## Set Default C++ Flags
+// ## Set Default C++ Flags
+## デフォルトC++フラグを設定する
 
-The default `CMAKE_CXX_FLAGS` is either empty or contains the appropriate flags
-for the build type.
+// The default `CMAKE_CXX_FLAGS` is either empty or contains the appropriate flags
+// for the build type.
 
-To set additional default compile flags you can add the following to your
-top level CMakeLists.txt
+デフォルトの `CMAKE_CXX_FLAGS` は空であるか、ビルドタイプに応じた適切なフラグが入っています。
+
+// To set additional default compile flags you can add the following to your
+// top level CMakeLists.txt
+
+デフォルトのコンパイルフラグを追加で設定するにはトップレベルCMakeLists.txtに以下を追記します。
 
 [source,cmake]
 ----
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DEX2" CACHE STRING "Set C++ Compiler Flags" FORCE)
 ----
 
-Similarly to +CMAKE_CXX_FLAGS+ other options include:
+// Similarly to +CMAKE_CXX_FLAGS+ other options include:
++CMAKE_CXX_FLAGS+ と同ようなオプションが存在します。
 
-  * Setting C compiler flags using +CMAKE_C_FLAGS+
-  * Setting linker flags using +CMAKE_LINKER_FLAGS+.
+// * Setting C compiler flags using +CMAKE_C_FLAGS+
+// * Setting linker flags using +CMAKE_LINKER_FLAGS+.
+  * Cコンパイラのフラグを設定するには +CMAKE_C_FLAGS+ を使います
+  * リンカフラグを設定するには +CMAKE_LINKER_FLAGS+ を使います
+
+// [NOTE]
+// ====
+// The values `CACHE STRING "Set C++ Compiler Flags" FORCE` from the above command
+// are used to force this variable to be set in the CMakeCache.txt file.
+
+// For more details, see https://cmake.org/cmake/help/v3.0/command/set.html[here]
+// ====
 
 [NOTE]
 ====
-The values `CACHE STRING "Set C++ Compiler Flags" FORCE` from the above command
-are used to force this variable to be set in the CMakeCache.txt file.
+上のコマンドの `CACHE STRING "Set C++ Compiler Flags" FORCE` という値はこの変数がCMakeCache.txtファイルで設定されるよう強制するために使われています。
 
-For more details, see https://cmake.org/cmake/help/v3.0/command/set.html[here]
+詳細は https://cmake.org/cmake/help/v3.0/command/set.html[こちら] を見てください。
 ====
 
+// Once set the +CMAKE_C_FLAGS+ and +CMAKE_CXX_FLAGS+ will set a compler flag / definiton globally for all targets in this directory or any included sub-directories. This method is not recommended for general usage now and the +target_compile_definitions+ function is preferred.
 
-Once set the +CMAKE_C_FLAGS+ and +CMAKE_CXX_FLAGS+ will set a compler flag / definiton globally for all targets in this directory or any included sub-directories. This method is not recommended for general usage now and the +target_compile_definitions+ function is preferred.
++CMAKE_C_FLAGS+ や +CMAKE_CXX_FLAGS+ を設定するとコンパイラフラグ / 定義はそのディレクトリやインクルードした全サブディレクトリのすべてのターゲットにグローバルに設定されます。
+現在この方法は汎用的手法としては推奨されておらず、 +target_compile_definitions+ 関数を使うべきです。
 
-### Set CMake Flags
+// ### Set CMake Flags
+### CMakeフラグを設定する
 
-Similar to the build type a global C++ compiler flag can be set using the following methods.
+// Similar to the build type a global C++ compiler flag can be set using the following methods.
 
-  - Using a gui tool such as ccmake / cmake-gui
+ビルドタイプと同じように以下の方法でグローバルなC++コンパイラフラグを設定できます。
+
+// - Using a gui tool such as ccmake / cmake-gui
+  - ccmake / cmake-guiのようなGUIツールを使う
 
 image::cmake-gui-set-cxx-flag.png[cmake-gui set cxx flag]
 
-  - Passing into cmake
+// - Passing into cmake
+  - cmakeに渡す
 
 [source,cmake]
 ----
 cmake .. -DCMAKE_CXX_FLAGS="-DEX3"
 ----
 
-# Building the Example
+// # Building the Example
+# 事例のビルド
 
 [source,bash]
 ----
